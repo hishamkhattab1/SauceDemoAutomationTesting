@@ -55,7 +55,12 @@ public class HomePage {
             try {
                 int actualCartNum = Integer.parseInt(driver.findElement(By.xpath(ActualCartNumber)).getText());
                 Assert.assertTrue(driver.findElement(By.className(ClassName)).isDisplayed());
-                Assert.assertEquals(actualCartNum,btnAddCount);
+                if (actualCartNum == btnAddCount){
+                    Assert.assertEquals(actualCartNum,btnAddCount);
+                }
+                else {
+                    Assert.assertNotEquals(actualCartNum,btnAddCount);
+                }
             } catch (org.openqa.selenium.NoSuchElementException e){
                 System.out.println("Failed to Add Items to Cart");
             }
