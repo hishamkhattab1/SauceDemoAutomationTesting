@@ -14,7 +14,10 @@ public class CheckoutTest extends BaseTest{
         try {
             loginPage.loginProcess(UN, PW);
             String status = loginPage.AssertLoginProcess(Message);
-            EscapeLockedUsers(status,UN);
+            if (status.equalsIgnoreCase("failure")) {
+                    System.out.println("Skipping further tests for user: " + UN);
+                    return; // Exit the test early
+            }
             cartpage.addItemstoCart();
             cartpage.ClickCartBtn();
             checkoutpage.PressCheckOutBtn();
