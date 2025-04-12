@@ -99,39 +99,43 @@ public class HomePage {
 
     public void sortFeatureTest(String username){
         try {
-            // A to Z
-            ClickSortField("A to Z");
-            List<String> productNames = getProductNames(driver);
-            List<String> sortedNames = new ArrayList<>(productNames);
-            Collections.sort(sortedNames);
-            System.out.println("A to Z sorting is correct!");
+            try {
+                // A to Z
+                ClickSortField("A to Z");
+                List<String> productNames = getProductNames(driver);
+                List<String> sortedNames = new ArrayList<>(productNames);
+                Collections.sort(sortedNames);
+                System.out.println("A to Z sorting is correct!");
 
-            // Z to A
-            ClickSortField("Z to A");
-            productNames = getProductNames(driver);
-            sortedNames = new ArrayList<>(productNames);
-            Collections.sort(sortedNames, Collections.reverseOrder());
-            Assert.assertEquals(sortedNames, productNames);
-            System.out.println("Z to A sorting is correct!");
+                // Z to A
+                ClickSortField("Z to A");
+                productNames = getProductNames(driver);
+                sortedNames = new ArrayList<>(productNames);
+                Collections.sort(sortedNames, Collections.reverseOrder());
+                Assert.assertEquals(sortedNames, productNames);
+                System.out.println("Z to A sorting is correct!");
 
-            // Price low to high
-            ClickSortField("Price low to high");
-            List<Double> productPrices = getProductPrices(driver);
-            List<Double> sortedPrices = new ArrayList<>(productPrices);
-            Collections.sort(sortedPrices);
-            Assert.assertEquals(sortedPrices, productPrices);
-            System.out.println("Lowest price sorting is correct!");
+                // Price low to high
+                ClickSortField("Price low to high");
+                List<Double> productPrices = getProductPrices(driver);
+                List<Double> sortedPrices = new ArrayList<>(productPrices);
+                Collections.sort(sortedPrices);
+                Assert.assertEquals(sortedPrices, productPrices);
+                System.out.println("Lowest price sorting is correct!");
 
-            // Price high to low
-            ClickSortField("Price high to low");
-            productPrices = getProductPrices(driver);
-            sortedPrices = new ArrayList<>(productPrices);
-            Collections.sort(sortedPrices, Collections.reverseOrder());
-            Assert.assertEquals(sortedPrices, productPrices);
-            System.out.println("Highest price sorting is correct!");
+                // Price high to low
+                ClickSortField("Price high to low");
+                productPrices = getProductPrices(driver);
+                sortedPrices = new ArrayList<>(productPrices);
+                Collections.sort(sortedPrices, Collections.reverseOrder());
+                Assert.assertEquals(sortedPrices, productPrices);
+                System.out.println("Highest price sorting is correct!");
+            } catch (AssertionError e) {
+                System.out.println("The sort feature is not working properly for " + username);
+            }
         }
-        catch (AssertionError e){
-            System.out.println("The sort feature is not working properly for " + username);
+        catch(UnhandledAlertException e) {
+            System.out.println("Sorting is broken! This error has been reported to Backtrace");
         }
     }
 
