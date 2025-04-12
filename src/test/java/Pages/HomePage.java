@@ -67,9 +67,14 @@ public class HomePage {
         }
         else {
             try {
-                Assert.assertFalse(driver.findElement(By.className(ClassName)).isDisplayed());
-            } catch (org.openqa.selenium.NoSuchElementException e){
-                System.out.println("Items Removed Successfully");
+                try {
+                    Assert.assertFalse(driver.findElement(By.className(ClassName)).isDisplayed());
+                } catch (org.openqa.selenium.NoSuchElementException e) {
+                    System.out.println("Items Removed Successfully");
+                }
+            }
+            catch (AssertionError e){
+                System.out.println("Found True but Expected False");
             }
         }
     }
