@@ -13,7 +13,6 @@ public class CartPage extends HomePage{
     By CartNumIcon = By.xpath("/html/body/div/div/div/div[1]/div[1]/div[3]/a/span");
     String AddItemsClass = "btn_primary";
     String RemoveItemsClass = "cart_button";
-
     private String  CartBtnLocator = "//*[@id=\"shopping_cart_container\"]/a";
 
     public CartPage(WebDriver driver){
@@ -54,8 +53,12 @@ public class CartPage extends HomePage{
     }
 
     public void AssertRemoveFromCart(){
-        System.out.println(isElementPresent());
-       // Assert.assertFalse(driver.findElement(By.xpath(ActualCartNumber)).isDisplayed());
+        if(isElementPresent()){
+            Assert.assertFalse(isElementPresent());
+        }
+        else {
+            Assert.assertTrue(isElementPresent());
+        }
     }
 
     public void AssertContinueShopping(){

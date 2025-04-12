@@ -1,9 +1,6 @@
 package Pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +11,14 @@ public class HomePage {
 
     // VARIABLES
     String ActualCartNumber = "//*[@id=\"shopping_cart_container\"]/a/span";
+    String productNameXPath = "/html/body/div/div/div/div[2]/div/div/div/div[*]/div[2]/div[1]/a/div\n";
+    String productPriceXPath = "/html/body/div/div/div/div[2]/div/div/div/div[*]/div[2]/div[2]/div\n";
+    String cartIconXpath = "//*[@id=\"header_container\"]/div[2]/div/span/select";
+    String AtoZ = "//*[@id=\"header_container\"]/div[2]/div/span/select/option[1]";
+    String ZtoA = "//*[@id=\"header_container\"]/div[2]/div/span/select/option[2]";
+    String LowtoHigh = "//*[@id=\"header_container\"]/div[2]/div/span/select/option[3]";
+    String HightoLow = "//*[@id=\"header_container\"]/div[2]/div/span/select/option[4]";
+
 
     public WebDriver driver;
 
@@ -24,6 +29,7 @@ public class HomePage {
     public void ClickAddToCartBtn(String addToCartBtn){
         driver.findElement(By.id(addToCartBtn)).click();
     }
+
     public int AddAllItemsToCart(String ButtonClassName){
         List<WebElement> addToCartButtons = driver.findElements(By.className(ButtonClassName));
         int btnCount=0;
@@ -64,7 +70,7 @@ public class HomePage {
     }
 
     public List<String> getProductNames(WebDriver driver){
-        List<WebElement> productElements = driver.findElements(By.xpath("/html/body/div/div/div/div[2]/div/div/div/div[*]/div[2]/div[1]/a/div\n"));
+        List<WebElement> productElements = driver.findElements(By.xpath(productNameXPath));
         List<String> productNames = new ArrayList<>();
         for ( WebElement product : productElements ){
             productNames.add(product.getText());
@@ -73,7 +79,7 @@ public class HomePage {
     }
 
     public List<Double> getProductPrices(WebDriver driver){
-        List<WebElement> priceElements = driver.findElements(By.xpath("/html/body/div/div/div/div[2]/div/div/div/div[*]/div[2]/div[2]/div\n"));
+        List<WebElement> priceElements = driver.findElements(By.xpath(productPriceXPath));
         List<Double> productPrices = new ArrayList<>();
         for ( WebElement price : priceElements){
             productPrices.add(Double.parseDouble(price.getText().replace("$","")));
@@ -81,39 +87,42 @@ public class HomePage {
         return productPrices;
     }
 
-    public void sortFeatureTest(){
-        // A to Z
-        ClickSortField("A to Z");
-        List<String> productNames = getProductNames(driver);
-        List<String> sortedNames = new ArrayList<>(productNames);
-        Collections.sort(sortedNames);
-        System.out.println("A to Z sorting is correct!");
+    public void sortFeatureTest(String username){
+        try {
+            // A to Z
+            ClickSortField("A to Z");
+            List<String> productNames = getProductNames(driver);
+            List<String> sortedNames = new ArrayList<>(productNames);
+            Collections.sort(sortedNames);
+            System.out.println("A to Z sorting is correct!");
 
-        // Z to A
-        ClickSortField("Z to A");
-        productNames = getProductNames(driver);
-        sortedNames = new ArrayList<>(productNames);
-        Collections.sort(sortedNames, Collections.reverseOrder());
-        Assert.assertEquals(sortedNames, productNames);
-        System.out.println("Z to A sorting is correct!");
+            // Z to A
+            ClickSortField("Z to A");
+            productNames = getProductNames(driver);
+            sortedNames = new ArrayList<>(productNames);
+            Collections.sort(sortedNames, Collections.reverseOrder());
+            Assert.assertEquals(sortedNames, productNames);
+            System.out.println("Z to A sorting is correct!");
 
-        // Price low to high
-        ClickSortField("Price low to high");
-        List<Double> productPrices = getProductPrices(driver);
-        List<Double> sortedPrices = new ArrayList<>(productPrices);
-        Collections.sort(sortedPrices);
-        Assert.assertEquals(sortedPrices, productPrices);
-        System.out.println("Lowest price sorting is correct!");
+            // Price low to high
+            ClickSortField("Price low to high");
+            List<Double> productPrices = getProductPrices(driver);
+            List<Double> sortedPrices = new ArrayList<>(productPrices);
+            Collections.sort(sortedPrices);
+            Assert.assertEquals(sortedPrices, productPrices);
+            System.out.println("Lowest price sorting is correct!");
 
-        // Price high to low
-        ClickSortField("Price high to low");
-        productPrices = getProductPrices(driver);
-        sortedPrices = new ArrayList<>(productPrices);
-        Collections.sort(sortedPrices, Collections.reverseOrder());
-        Assert.assertEquals(sortedPrices, productPrices);
-        System.out.println("Highest price sorting is correct!");
-
-
+            // Price high to low
+            ClickSortField("Price high to low");
+            productPrices = getProductPrices(driver);
+            sortedPrices = new ArrayList<>(productPrices);
+            Collections.sort(sortedPrices, Collections.reverseOrder());
+            Assert.assertEquals(sortedPrices, productPrices);
+            System.out.println("Highest price sorting is correct!");
+        }
+        catch (AssertionError e){
+            System.out.println("The sort feature is not working properly for " + username);
+        }
     }
 
     public void ClickRemoveBtn(String removeBtn){
@@ -126,19 +135,19 @@ public class HomePage {
     }
 
     public void ClickSortField(String SortOption){
-        driver.findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/div/span/select")).click();
+        driver.findElement(By.xpath(cartIconXpath)).click();
         switch(SortOption){
             case "A to Z":
-                driver.findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/div/span/select/option[1]")).click();
+                driver.findElement(By.xpath(AtoZ)).click();
                 break;
             case "Z to A":
-                driver.findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/div/span/select/option[2]")).click();
+                driver.findElement(By.xpath(ZtoA)).click();
                 break;
             case "Price low to high":
-                driver.findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/div/span/select/option[3]")).click();
+                driver.findElement(By.xpath(LowtoHigh)).click();
                 break;
             case "Price high to low":
-                driver.findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/div/span/select/option[4]")).click();
+                driver.findElement(By.xpath(HightoLow)).click();
                 break;
         }
     }

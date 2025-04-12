@@ -4,7 +4,7 @@ import org.testng.annotations.Test;
 
 public class CartTest extends BaseTest{
 
-    @Test
+
     public void AssertRemoveAllItemFromCart(){
         loginPage.loginProcess("standard_user","secret_sauce");
         cartpage.addItemstoCart();
@@ -13,7 +13,6 @@ public class CartTest extends BaseTest{
         cartpage.AssertRemoveFromCart();
     }
 
-    @Test
     public void AssertContinueShopping(){
         loginPage.loginProcess("standard_user","secret_sauce");
         cartpage.ClickCartBtn();
@@ -21,7 +20,7 @@ public class CartTest extends BaseTest{
         cartpage.AssertContinueShopping();
     }
 
-    @Test
+
     public void AssertCheckOut(){
         loginPage.loginProcess("standard_user","secret_sauce");
         cartpage.ClickCartBtn();

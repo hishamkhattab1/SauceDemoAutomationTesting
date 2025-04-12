@@ -9,6 +9,8 @@ import org.testng.annotations.DataProvider;
 import java.lang.reflect.Method;
 
 public class LoginPage {
+    String homepageURL = "inventory.html";
+    String actualLoginEMessage = "//*[@id=\"login_button_container\"]/div/form/div[3]/h3";
 
     private WebDriver driver;
     private By usernameField = By.id("user-name");
@@ -19,26 +21,6 @@ public class LoginPage {
     public LoginPage(WebDriver driver){
         this.driver = driver;
     }
-
-    /*@DataProvider(name = "loginData")
-    public Object[][] getData(Method method) {
-        String excelPath = "D:\\Freelancing\\Book1.xlsx";
-        ExcelUtilities excel = new ExcelUtilities(excelPath, "Sheet1");
-
-        int rowCount = excel.getRowCount();
-        int colCount = excel.getColCount();
-
-        Object data[][] = new Object[rowCount - 1][colCount];
-
-        for (int i = 1; i < rowCount; i++) {
-            for (int j = 0; j < colCount; j++) {
-                data[i - 1][j] = excel.getCellData(i, j);
-            }
-        }
-        return data;
-    }*/
-
-
 
     public void enterUsername(String username){
         driver.findElement(usernameField).sendKeys(username);
@@ -58,12 +40,14 @@ public class LoginPage {
         clickLoginButton();
     }
 
-    public void AssertLoginProcess(String ErrorMessage){
-        if (driver.getCurrentUrl().contains("inventory.html")){
-            Assert.assertTrue(driver.getCurrentUrl().contains("inventory.html"),"Login Failed!");
+    public String AssertLoginProcess(String ErrorMessage){
+        if (driver.getCurrentUrl().contains(homepageURL)){
+            Assert.assertTrue(driver.getCurrentUrl().contains(homepageURL),"Login Failed!");
+            return "success";
         }
         else {
-            Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"login_button_container\"]/div/form/div[3]/h3")).getText(),ErrorMessage);
+            Assert.assertEquals(driver.findElement(By.xpath(actualLoginEMessage)).getText(),ErrorMessage);
+            return "failure";
         }
     }
 }
